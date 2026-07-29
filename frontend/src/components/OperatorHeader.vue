@@ -169,7 +169,7 @@ async function logout() {
   border-radius: 50%;
   background-color: #8d97aa;
 }
-.operator-status_active .status-switch__dot {
+.operator-status.active .status-switch-dot {
   background-color: var(--color-success);
   transform: translateX(19px);
 }
