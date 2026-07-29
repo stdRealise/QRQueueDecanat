@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Entities;
 
 namespace QRQueueDecanat.Data.Configurations;
@@ -16,12 +17,12 @@ public class OperatorStatusConfiguration
             new
             {
                 Id = 1,
-                Name = "work"
+                Name = StatusNames.Active
             },
             new
             {
                 Id = 2,
-                Name = "break"
+                Name = StatusNames.Paused
             }
         );
     }

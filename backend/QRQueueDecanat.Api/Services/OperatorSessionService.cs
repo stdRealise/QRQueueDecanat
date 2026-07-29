@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Data;
 using QRQueueDecanat.DTOs;
 using QRQueueDecanat.Entities;
@@ -71,7 +72,7 @@ public class OperatorSessionService : IOperatorSessionService
         }
 
         var activeStatus = await _context.OperatorStatuses
-            .SingleAsync(status => status.Name == "work",
+            .SingleAsync(status => status.Name == StatusNames.Active,
                 cancellationToken);
         var session = new OperatorSession
         {
@@ -112,8 +113,8 @@ public class OperatorSessionService : IOperatorSessionService
             .AnyAsync(ticket =>
                 ticket.SessionId == session.Id &&
                 (
-                    ticket.Status.Name == "called" ||
-                    ticket.Status.Name == "serving"
+                    ticket.Status.Name == StatusNames.Called ||
+                    ticket.Status.Name == StatusNames.Serving
                 ), cancellationToken);
         if (hasCurrentTicket)
         {
@@ -142,8 +143,8 @@ public class OperatorSessionService : IOperatorSessionService
             .Where(ticket =>
                 ticket.SessionId == sessionId &&
                 (
-                    ticket.Status.Name == "called" ||
-                    ticket.Status.Name == "serving"
+                    ticket.Status.Name == StatusNames.Called ||
+                    ticket.Status.Name == StatusNames.Serving
                 ))
             .Select(ticket => new OperatorTicketResponse(
                 ticket.Id,
@@ -164,7 +165,7 @@ public class OperatorSessionService : IOperatorSessionService
             .AsNoTracking()
             .Where(ticket =>
                 ticket.ServiceDate == queueDate &&
-                ticket.Status.Name == "waiting" &&
+                ticket.Status.Name == StatusNames.Waiting &&
                 operatorServiceIds.Contains(ticket.ServiceId))
             .OrderBy(ticket => ticket.CreatedAt)
             .Select(ticket => new OperatorTicketResponse(

@@ -31,7 +31,7 @@ const isSkipped = computed(() => {
   return ticket.value?.statusName === 'skipped'
 })
 const isCanceled = computed(() => {
-  return ticket.value?.statusName === 'canceled'
+  return ticket.value?.statusName === 'cancelled'
 })
 function getStoredTicketId() {
   const storedId = localStorage.getItem('currentTicketId')

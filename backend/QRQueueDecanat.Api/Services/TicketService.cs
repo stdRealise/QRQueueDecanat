@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Data;
 using QRQueueDecanat.DTOs;
 using QRQueueDecanat.Entities;
@@ -58,7 +59,7 @@ public class TicketService : ITicketService
         }
 
         var waitingStatus = await _context.TicketStatuses
-            .SingleAsync(status => status.Name == "waiting",
+            .SingleAsync(status => status.Name == StatusNames.Waiting,
                 cancellationToken);
 
         var utcNow = DateTime.UtcNow;
@@ -133,15 +134,15 @@ public class TicketService : ITicketService
                 .SingleOrDefaultAsync(cancellationToken);
         }
         
-        var canCancel = ticket.Status.Name == "waiting" ||
-            ticket.Status.Name == "called";
+        var canCancel = ticket.Status.Name == StatusNames.Waiting ||
+            ticket.Status.Name == StatusNames.Called;
         if (!canCancel)
         {
             throw new ConflictException("Ticket cannot be canceled.");
         }
         
         var cancelledStatus = await _context.TicketStatuses
-                .SingleAsync(status => status.Name == "cancelled",
+                .SingleAsync(status => status.Name == StatusNames.Cancelled,
                     cancellationToken);
         ticket.StatusId = cancelledStatus.Id;
         ticket.Status = cancelledStatus;

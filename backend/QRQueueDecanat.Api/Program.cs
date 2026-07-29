@@ -10,7 +10,7 @@ using QRQueueDecanat.Services;
 
 var FrontendCorsPolicy = "FrontendCors";
 var builder = WebApplication.CreateBuilder(args);
-var queueTimeZoneId = builder.Configuration["Queue:TimeZoneId"]
+var queueTimeZoneId = builder.Configuration["QueueSettings:TimeZoneId"]
     ?? "Asia/Yekaterinburg";
 var queueTimeZone =
     TimeZoneInfo.FindSystemTimeZoneById(queueTimeZoneId);

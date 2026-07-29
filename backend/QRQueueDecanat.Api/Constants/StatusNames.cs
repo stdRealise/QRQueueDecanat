@@ -9,6 +9,5 @@ public static class StatusNames
     public const string Skipped = "skipped";
     public const string Cancelled = "cancelled";
     public const string Active = "work";
-    public const string Paused = "paused";
-    public const string Closed = "closed";
+    public const string Paused = "break";
 }

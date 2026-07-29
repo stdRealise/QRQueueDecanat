@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using QRQueueDecanat.DTOs;
 using QRQueueDecanat.Extensions;
 using QRQueueDecanat.Interfaces;
-using QRQueueDecanat.Services;
-
 namespace QRQueueDecanat.Controllers;
 
 [Authorize(Roles = "operator")]

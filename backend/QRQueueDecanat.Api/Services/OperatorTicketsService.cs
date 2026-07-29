@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Data;
 using QRQueueDecanat.DTOs;
 using QRQueueDecanat.Entities;
@@ -39,10 +40,10 @@ public class OperatorTicketsService : IOperatorTicketsService
             ?? throw new NotFoundException("Session not found.");
 
         var calledStatus = await _context.TicketStatuses
-            .SingleAsync(status => status.Name == "called",
+            .SingleAsync(status => status.Name == StatusNames.Called,
                 cancellationToken);
         var servingStatus = await _context.TicketStatuses
-            .SingleAsync(status => status.Name == "serving",
+            .SingleAsync(status => status.Name == StatusNames.Serving,
                 cancellationToken);
         
         var hasCurrentTicket = await _context.Tickets
@@ -58,7 +59,7 @@ public class OperatorTicketsService : IOperatorTicketsService
         }
 
         var waitingStatus = await _context.TicketStatuses
-            .SingleAsync(status => status.Name == "waiting",
+            .SingleAsync(status => status.Name == StatusNames.Waiting,
                 cancellationToken);
         var queueDate = GetQueueDate();
         var ticket = await _context.Tickets.FromSqlInterpolated($"""
@@ -100,8 +101,8 @@ public class OperatorTicketsService : IOperatorTicketsService
         return ChangeTicketStatusAsync(
             operatorId,
             ticketId,
-            "called",
-            "serving",
+            StatusNames.Called,
+            StatusNames.Serving,
             (ticket, utcNow) =>
             {
                 ticket.StartedAt = utcNow;
@@ -117,8 +118,8 @@ public class OperatorTicketsService : IOperatorTicketsService
         return ChangeTicketStatusAsync(
             operatorId,
             ticketId,
-            "serving",
-            "completed",
+            StatusNames.Serving,
+            StatusNames.Completed,
             (ticket, utcNow) =>
             {
                 ticket.EndedAt = utcNow;
@@ -133,8 +134,8 @@ public class OperatorTicketsService : IOperatorTicketsService
         return ChangeTicketStatusAsync(
             operatorId,
             ticketId,
-            "called",
-            "skipped",
+            StatusNames.Called,
+            StatusNames.Skipped,
             (ticket, utcNow) =>
             {
                 ticket.EndedAt = utcNow;
@@ -153,9 +154,9 @@ public class OperatorTicketsService : IOperatorTicketsService
             .Where(ticket =>
                 ticket.SessionId == sessionId &&
                 (
-                    ticket.Status.Name == "completed" ||
-                    ticket.Status.Name == "skipped" ||
-                    ticket.Status.Name == "cancelled"
+                    ticket.Status.Name == StatusNames.Completed ||
+                    ticket.Status.Name == StatusNames.Skipped ||
+                    ticket.Status.Name == StatusNames.Cancelled
                 ))
             .OrderByDescending(ticket => ticket.EndedAt)
             .Select(ticket => new OperatorTicketResponse(

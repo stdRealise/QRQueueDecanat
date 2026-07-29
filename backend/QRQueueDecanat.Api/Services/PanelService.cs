@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Data;
 using QRQueueDecanat.DTOs;
 using QRQueueDecanat.Interfaces;
@@ -27,24 +28,24 @@ public class PanelService : IPanelService
         var workingCounters = await _context.OperatorSessions
             .CountAsync(session =>
                 session.EndedAt == null &&
-                session.Status.Name == "work",
+                session.Status.Name == StatusNames.Active,
                 cancellationToken);
         
         var ticketCounts = await _context.Tickets
             .Where(ticket => ticket.ServiceDate == queueDate && 
-                (ticket.Status.Name == "waiting" || ticket.Status.Name == "serving"))
+                (ticket.Status.Name == StatusNames.Waiting || ticket.Status.Name == StatusNames.Serving))
             .GroupBy(ticket => ticket.Status.Name)
             .Select(g => new { Status = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.Status, x => x.Count, cancellationToken);
-        var waitingCount = ticketCounts.GetValueOrDefault("waiting", 0);
-        var servingCount = ticketCounts.GetValueOrDefault("serving", 0);
+        var waitingCount = ticketCounts.GetValueOrDefault(StatusNames.Waiting, 0);
+        var servingCount = ticketCounts.GetValueOrDefault(StatusNames.Serving, 0);
         
         var calls = await _context.Tickets
             .AsNoTracking()
             .Where(ticket =>
                 ticket.ServiceDate == queueDate &&
                 ticket.SessionId != null &&
-                ticket.Status.Name == "called")
+                ticket.Status.Name == StatusNames.Called)
             .OrderByDescending(ticket => ticket.CalledAt)
             .Take(8)
             .Select(ticket => new PanelTicketResponse(
@@ -56,7 +57,7 @@ public class PanelService : IPanelService
             .AsNoTracking()
             .Where(ticket =>
                 ticket.ServiceDate == queueDate &&
-                ticket.Status.Name == "waiting")
+                ticket.Status.Name == StatusNames.Waiting)
             .OrderBy(ticket => ticket.CreatedAt)
             .Take(5)
             .Select(ticket => ticket.DisplayNumber)

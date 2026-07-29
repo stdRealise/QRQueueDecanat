@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using QRQueueDecanat.Constants;
 using QRQueueDecanat.Entities;
 
 namespace QRQueueDecanat.Data.Configurations;
@@ -21,32 +22,32 @@ public class TicketStatusConfiguration
             new
             {
                 Id = 1,
-                Name = "waiting"
+                Name = StatusNames.Waiting
             },
             new
             {
                 Id = 2,
-                Name = "called"
+                Name = StatusNames.Called
             },
             new
             {
                 Id = 3,
-                Name = "serving"
+                Name = StatusNames.Serving
             },
             new
             {
                 Id = 4,
-                Name = "completed"
+                Name = StatusNames.Completed
             },
             new
             {
                 Id = 5,
-                Name = "skipped"
+                Name = StatusNames.Skipped
             },
             new
             {
                 Id = 6,
-                Name = "cancelled"
+                Name = StatusNames.Cancelled
             }
         );
     }
