@@ -1,0 +1,99 @@
+@import './base.css';
+@import './theme.css';
+
+
+header {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--color-border-light);
+  text-align: left;
+  white-space: nowrap;
+}
+th {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+tbody tr:hover {
+  background: var(--color-hover-element);
+}
+button {
+  border-radius: 15px;
+}
+
+.button-app {
+    background-color: var(--color-primary);;
+    color: var(--color-text-light);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+  }
+
+.button-app:active {
+  background-color: var(--color-primary-dark);
+}
+
+.button-app:disabled {
+  background-color: var(--color-primary-dark);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-app:hover {
+  background-color: var(--color-primary-dark);
+}
+
+a, 
+.button-app {
+  text-decoration: none;
+}
+
+.status_waiting {
+  background: #dfe5f5;
+  color: #2457e6;
+}
+
+.status_called {
+  background: #d7eadb;
+  color: #18a63d;
+}
+
+.status_serving {
+  background: #d7eadb;
+  color: #128a34;
+}
+
+.status_completed {
+  background: #dddddd;
+  color: #696969;
+}
+
+.status_skipped {
+  background: #f5e3d2;
+  color: #ef7421;
+}
+
+.status_cancelled {
+  background: #b9b9b9;
+  color: #666666;
+}
+
+.status-badge {
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 20px;
+}
